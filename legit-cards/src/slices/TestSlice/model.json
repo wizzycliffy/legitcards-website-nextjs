@@ -1,0 +1,48 @@
+{
+  "id": "test_slice",
+  "type": "SharedSlice",
+  "name": "TestSlice",
+  "description": "TestSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "some_ma_test_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Some Ma Test Text",
+            "placeholder": "ooops",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "itWillAppearHereInSliceM",
+      "name": "It will appear here in Slice M",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "some_ma_test_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Some Ma Test Text",
+            "placeholder": "ooops",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

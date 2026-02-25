@@ -1,0 +1,251 @@
+{
+  "info": {
+    "_postman_id": "6c04b177-2a08-46c9-b29f-4574cbe739eb",
+    "name": "LEGITCARDS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19148571"
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://legitcards-api.onrender.com/api", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/users/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"email\": \"\", \"password\": \"\", \"username\": \"\" }"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/users/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"email\": \"\", \"password\": \"\" }"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crypto",
+      "item": [
+        {
+          "name": "Get All Crypto Coins",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/crypto/users/get/all",
+            "description": "Returns list of supported crypto assets: BTC, USDT, ETH.\nResponse shape:\n{\n  statusCode: 'ASSET_FETCHED',\n  message: string,\n  status: 200,\n  data: [ { _id, name, images } ]\n}"
+          }
+        },
+        {
+          "name": "Get Crypto Networks / Rates (by coin ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/crypto/rates/users/get/all",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"id\": \"<coinId>\" }"
+            },
+            "description": "Fetch available networks/rates for a specific coin (primarily used for USDT to list TRC20, ERC20, BEP20 etc)."
+          }
+        },
+        {
+          "name": "Start Crypto Trade",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/crypto/trade/users/start",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<userId>\",\n  \"data\": [\n    {\n      \"rateSpec\": \"<coinId or networkId>\",\n      \"userAmount\": 100,\n      \"images\": [\"<base64>\"],\n      \"network\": \"<optional network name>\"\n    }\n  ]\n}"
+            },
+            "description": "Initiates a crypto sell trade.\nResponse: { status: 200, data: { data: { address: '...' }, trade: {...} } }"
+          }
+        },
+        {
+          "name": "Get User Crypto Trades",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/crypto/trade/users/get",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<userId>\",\n  \"filter\": { \"status\": \"ALL\" },\n  \"sort\": \"desc\",\n  \"start\": \"0\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gift Cards",
+      "item": [
+        {
+          "name": "Get Gift Card Assets",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/assets/users/get/all"
+          }
+        },
+        {
+          "name": "Get Gift Card Rates",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/rates/users/get/all",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"id\": \"<userId>\" }"
+            }
+          }
+        },
+        {
+          "name": "Start Gift Card Trade",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/trades/users/start",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<userId>\",\n  \"data\": [\n    {\n      \"rateSpec\": \"<rateId>\",\n      \"userAmount\": 100,\n      \"images\": [\"<base64>\"],\n      \"receiptImages\": [\"<base64>\"]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User Gift Card Trades",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/trades/users/get",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<userId>\",\n  \"filter\": { \"status\": \"ALL\" },\n  \"sort\": \"DESC\",\n  \"start\": 0\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        {
+          "name": "Get Wallet Balance",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/wallets/users/get/{{userId}}"
+          }
+        },
+        {
+          "name": "Withdraw",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/wallets/users/withdraw",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<userId>\",\n  \"amount\": 5000,\n  \"bankAccountId\": \"<bankId>\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/users/get/{{userId}}"
+          }
+        },
+        {
+          "name": "Get Banks",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/banks/users/get/all"
+          }
+        },
+        {
+          "name": "Validate Bank Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/banks/users/validate",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"accountNumber\": \"\", \"bankCode\": \"\" }"
+            }
+          }
+        },
+        {
+          "name": "Add Bank Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/banks/users/add",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<userId>\",\n  \"accountNumber\": \"\",\n  \"bankCode\": \"\",\n  \"bankName\": \"\",\n  \"accountName\": \"\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

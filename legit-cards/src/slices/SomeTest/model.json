@@ -1,0 +1,49 @@
+{
+  "id": "some_test",
+  "type": "SharedSlice",
+  "name": "SomeTest",
+  "description": "SomeTest",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "some": {
+          "type": "Table",
+          "config": {
+            "label": "Some"
+          }
+        },
+        "header_of_table": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Header of Table",
+            "placeholder": "Table Slice",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "link_to_see_more": {
+          "type": "Link",
+          "config": {
+            "label": "Link to See More",
+            "placeholder": "example.com",
+            "select": null,
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": false,
+            "variants": [
+              "Primary",
+              "Secondary"
+            ]
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

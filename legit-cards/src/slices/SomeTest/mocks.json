@@ -1,0 +1,107 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"some": {
+				"__TYPE__": "TableContent",
+				"content": [
+					{
+						"key": "5bd48388-b328-400c-8be9-66c744946dd1",
+						"type": "tableRow",
+						"content": [
+							{
+								"key": "7cc4cc2f-ca18-4f54-9607-37ae04a697f7",
+								"type": "tableHeader",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Adipisicing."
+											}
+										}
+									]
+								}
+							},
+							{
+								"key": "7c7361ff-eeb3-47f6-92ba-8fc164933955",
+								"type": "tableHeader",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Nulla."
+											}
+										}
+									]
+								}
+							}
+						]
+					},
+					{
+						"key": "556506f8-8507-42ce-931c-0870fe952146",
+						"type": "tableRow",
+						"content": [
+							{
+								"key": "472aa7ec-b040-4137-a8a1-3bee0e3cc475",
+								"type": "tableCell",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Ullamco eiusmod aliqua culpa."
+											}
+										}
+									]
+								}
+							},
+							{
+								"key": "b4ddc5b8-badc-4fff-b34a-7269bba06ed3",
+								"type": "tableCell",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Aliquip dolor sit laboris dolore."
+											}
+										}
+									]
+								}
+							}
+						]
+					}
+				]
+			},
+			"header_of_table": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Quis occaecat aliqua incididunt velit elit cillum non aute voluptate cillum. Consectetur duis minim aliqua nostrud deserunt."
+						}
+					}
+				]
+			},
+			"link_to_see_more": {
+				"__TYPE__": "LinkContent",
+				"key": "a04804c3-35cc-430f-a1a1-13edbe58fc18",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "http://google.com",
+					"text": "captured",
+					"variant": "Primary"
+				}
+			}
+		},
+		"items": []
+	}
+]
