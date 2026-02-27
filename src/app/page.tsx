@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Index from '@/pages/Index';
+import Index from '@/views/Index';
 
 export const metadata: Metadata = {
   title: 'LegitCards - Sell Gift Cards & Crypto for Naira',

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Signup from '@/pages/Signup';
+import Signup from '@/views/Signup';
 
 export const metadata: Metadata = {
   title: 'Sign Up - Create Your Free Account',

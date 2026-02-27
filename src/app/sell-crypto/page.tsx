@@ -1,4 +1,4 @@
-import SellCrypto from '@/pages/SellCrypto';
+import SellCrypto from '@/views/SellCrypto';
 
 export default function Page() {
   return <SellCrypto />;

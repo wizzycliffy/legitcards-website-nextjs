@@ -1,4 +1,4 @@
-import Withdraw from '@/pages/Withdraw';
+import Withdraw from '@/views/Withdraw';
 
 export default function Page() {
   return <Withdraw />;

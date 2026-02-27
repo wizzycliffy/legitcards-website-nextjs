@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import SellGiftCard from '@/pages/SellGiftCard';
+import SellGiftCard from '@/views/SellGiftCard';
 
 export const metadata: Metadata = {
   title: 'Sell Gift Card - Trade for Nigerian Naira',
