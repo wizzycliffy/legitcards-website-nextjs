@@ -13,6 +13,7 @@ import {
   CreditCard,
   HelpCircle,
   LayoutDashboard,
+  BookText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -22,11 +23,13 @@ import { useAuth } from "@/hooks/useAuth";
 const navLinks = [
   { name: "Homepage", path: "/", icon: Home },
   { name: "Gift Cards", path: "/gift-cards", icon: CreditCard },
+  { name: "Blog", path: "/blog", icon: BookText },
   { name: "FAQ", path: "/faq", icon: HelpCircle },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { isAuthenticated, logout } = useAuth();
@@ -34,6 +37,10 @@ export function Navbar() {
   const isDashboard =
     pathname.includes("dashboard") ||
     pathname.includes("profile");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Prevent background scroll when mobile menu is open
   useEffect(() => {
@@ -87,7 +94,7 @@ export function Navbar() {
                 </Link>
               ))}
 
-              {isAuthenticated && (
+              {mounted && isAuthenticated && (
                 <Link
                   href="/dashboard"
                   className={cn(
@@ -105,36 +112,38 @@ export function Navbar() {
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center gap-3">
               <ThemeToggle />
-              {isAuthenticated ? (
-                <>
-                  <Link href="/profile">
-                    <Button variant="ghost" size="sm">
-                      <User className="w-4 h-4 mr-2" />
-                      Profile
+              {mounted && (
+                isAuthenticated ? (
+                  <>
+                    <Link href="/profile">
+                      <Button variant="ghost" size="sm">
+                        <User className="w-4 h-4 mr-2" />
+                        Profile
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleLogout}
+                      className="text-destructive"
+                    >
+                      <LogOut className="w-4 h-4" />
                     </Button>
-                  </Link>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleLogout}
-                    className="text-destructive"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Link href="/login">
-                    <Button variant="ghost" className="text-sm">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link href="/signup">
-                    <Button variant="gradient" className="text-sm h-[40px]">
-                      Get Started
-                    </Button>
-                  </Link>
-                </>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login">
+                      <Button variant="ghost" className="text-sm">
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Link href="/signup">
+                      <Button variant="gradient" className="text-sm h-[40px]">
+                        Get Started
+                      </Button>
+                    </Link>
+                  </>
+                )
               )}
             </div>
 
@@ -196,7 +205,7 @@ export function Navbar() {
                 </Link>
               ))}
 
-              {isAuthenticated && (
+              {mounted && isAuthenticated && (
                 <Link
                   href="/dashboard"
                   onClick={() => setIsOpen(false)}
@@ -210,36 +219,38 @@ export function Navbar() {
 
             {/* Account Actions */}
             <div className="p-4 border-t space-y-3 bg-background">
-              {isAuthenticated ? (
-                <>
-                  <Link href="/profile" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full">
-                      <User className="w-4 h-4 mr-2" />
-                      Profile
+              {mounted && (
+                isAuthenticated ? (
+                  <>
+                    <Link href="/profile" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full">
+                        <User className="w-4 h-4 mr-2" />
+                        Profile
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="destructive"
+                      className="w-full"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
                     </Button>
-                  </Link>
-                  <Button
-                    variant="destructive"
-                    className="w-full"
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Link href="/login" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full mb-4">
-                      <p className="text-base">Sign In</p>
-                    </Button>
-                  </Link>
-                  <Link href="/signup" onClick={() => setIsOpen(false)}>
-                    <Button variant="gradient" className="w-full">
-                      Get Started
-                    </Button>
-                  </Link>
-                </>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full mb-4">
+                        <p className="text-base">Sign In</p>
+                      </Button>
+                    </Link>
+                    <Link href="/signup" onClick={() => setIsOpen(false)}>
+                      <Button variant="gradient" className="w-full">
+                        Get Started
+                      </Button>
+                    </Link>
+                  </>
+                )
               )}
             </div>
           </div>

@@ -93,7 +93,7 @@ export const fetchWithdrawals = createAsyncThunk(
   'wallet/fetchWithdrawals',
   async ({ userId, page = 1, size = 20 }: { userId: string; page?: number; size?: number }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}/withdraw/user/${userId}?page=${page}&size=${size}`, {
+      const response = await fetch(`${BASE_URL}/withdraw/request?page=${page}&size=${size}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -120,19 +120,27 @@ interface WithdrawPayload {
   nameEnquiryId: string;
   senderName: string;
   id: string;
+  version?: string;
+  pin: string;
 }
 
 export const initiateWithdrawal = createAsyncThunk(
   'wallet/withdraw',
   async (payload: WithdrawPayload, { rejectWithValue }) => {
     try {
+      // Inject version as requested if not already provided
+      const finalPayload = {
+        ...payload,
+        version: payload.version || "16020"
+      };
+
       const response = await fetch(`${BASE_URL}/withdraw`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(finalPayload),
       });
       const data = await response.json();
       if (!response.ok) return rejectWithValue(data.message || 'Failed to initiate withdrawal');
@@ -174,7 +182,7 @@ export const fetchBankAccounts = createAsyncThunk(
   'wallet/fetchBankAccounts',
   async (userId: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}/banks/users/get/id?id=${userId}&bankid=100004`, {
+      const response = await fetch(`${BASE_URL}/banks/users/accounts/get?id=${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -12,10 +12,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchWallet, fetchBanks, initiateWithdrawal } from "@/store/slices/walletSlice";
+import { fetchWallet, fetchBanks, initiateWithdrawal, validateBankAccount, fetchBankAccounts } from "@/store/slices/walletSlice";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 export default function Withdraw() {
@@ -26,14 +32,22 @@ export default function Withdraw() {
   const { wallet, banks, isLoading } = useAppSelector((state) => state.wallet);
 
   const [selectedBank, setSelectedBank] = useState("");
+  const [selectedBankName, setSelectedBankName] = useState("");
   const [amount, setAmount] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [accountName, setAccountName] = useState("");
+  
+  // Validation and Submission flow states
+  const [isValidating, setIsValidating] = useState(false);
+  const [currentStep, setCurrentStep] = useState<"FORM" | "PIN">("FORM");
+  const [pin, setPin] = useState("");
 
   useEffect(() => {
+    if (!user) return;
+    dispatch(fetchBankAccounts(user.userid));
     dispatch(fetchWallet(user.userid));
     dispatch(fetchBanks());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   // Pre-fill account details from user profile
   useEffect(() => {
@@ -43,8 +57,8 @@ export default function Withdraw() {
     }
   }, [user]);
 
-  const handleWithdraw = async () => {
-    if (!selectedBank || !amount || !accountNumber || !accountName) {
+  const handleProceed = async () => {
+    if (!selectedBank || !amount || !accountNumber) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields",
@@ -72,6 +86,45 @@ export default function Withdraw() {
       return;
     }
 
+    setIsValidating(true);
+    try {
+      // 1. Validate the account number first
+      const trackingReference = `${Date.now()}${Math.random().toString(36).substring(7)}`;
+      const validationResult = await dispatch(
+        validateBankAccount({
+          bankCode: selectedBank,
+          accountNumber,
+          trackingReference,
+        })
+      ).unwrap();
+
+      setAccountName(validationResult.bankAccountName || "");
+
+      // 2. Move to PIN verification step
+      setCurrentStep("PIN");
+      
+    } catch (error: any) {
+      toast({
+        title: "Account Validation Failed",
+        description: typeof error === 'string' ? error : error?.message || "Could not verify this account at the selected bank.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
+  const handleWithdrawSubmit = async () => {
+    if (!pin || pin.length < 4) {
+      toast({
+        title: "PIN Required",
+        description: "Please enter your withdrawal PIN",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const withdrawAmount = Number(amount);
     const selectedBankData = banks.find((b) => b.code === selectedBank);
     if (!selectedBankData || !user) return;
 
@@ -88,6 +141,8 @@ export default function Withdraw() {
           nameEnquiryId: "NA",
           senderName: accountName,
           id: user.userid || user.id,
+          // TODO: Ensure backend uses the passsed PIN if required by your API implementation
+          pin: pin 
         })
       ).unwrap();
 
@@ -99,13 +154,18 @@ export default function Withdraw() {
       // Reset form
       setAmount("");
       setSelectedBank("");
+      setSelectedBankName("");
+      setAccountNumber("");
+      setAccountName("");
+      setPin("");
+      setCurrentStep("FORM");
 
       // Refresh wallet balance
       dispatch(fetchWallet(user.userid));
     } catch (error: any) {
       toast({
         title: "Withdrawal Failed",
-        description: error || "Failed to initiate withdrawal",
+        description: typeof error === 'string' ? error : error?.message || "Failed to initiate withdrawal",
         variant: "destructive",
       });
     }
@@ -146,7 +206,17 @@ export default function Withdraw() {
           <div className="bg-card rounded-2xl border border-border shadow-card p-6 space-y-6">
             <div className="space-y-2">
               <Label htmlFor="bank">Select Bank</Label>
-              <Select value={selectedBank} onValueChange={setSelectedBank}>
+              <Select 
+                value={selectedBank} 
+                onValueChange={(val) => {
+                  setSelectedBank(val);
+                  const bank = banks.find(b => b.code === val);
+                  if (bank) {
+                     setSelectedBankName(bank.name);
+                     setAccountName(""); // resets validation name if bank changes
+                  }
+                }}
+              >
                 <SelectTrigger id="bank" className="h-12 rounded-xl">
                   <SelectValue placeholder="Choose your bank" />
                 </SelectTrigger>
@@ -168,21 +238,22 @@ export default function Withdraw() {
                 placeholder="0000000000"
                 className="h-12 rounded-xl"
                 value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
+                onChange={(e) => {
+                  setAccountNumber(e.target.value);
+                  setAccountName(""); // resets validation name if number changes
+                }}
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="accountName">Account Name</Label>
-              <Input
-                id="accountName"
-                type="text"
-                placeholder="John Doe"
-                className="h-12 rounded-xl"
-                value={accountName}
-                onChange={(e) => setAccountName(e.target.value)}
-              />
-            </div>
+            {/* Account Name is now verified by API, so we show it read-only if verification has already happened optionally*/}
+            {accountName && (
+              <div className="space-y-2">
+                <Label>Verified Account Name</Label>
+                <div className="p-3 bg-green-50/50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30 rounded-xl">
+                  <p className="font-semibold text-green-800 dark:text-green-300 uppercase">{accountName}</p>
+                </div>
+              </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="amount">Amount (₦)</Label>
@@ -205,21 +276,75 @@ export default function Withdraw() {
 
             <Button
               className="w-full h-12"
-              onClick={handleWithdraw}
-              disabled={isLoading}
+              onClick={handleProceed}
+              disabled={isValidating || !selectedBank || !accountNumber || !amount}
             >
-              {isLoading ? (
+              {isValidating ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Processing...
                 </>
               ) : (
-                "Withdraw Funds"
+                "Verify & Proceed"
               )}
             </Button>
           </div>
         </div>
       </div>
+
+      {/* PIN Verification Modal */}
+      <Dialog open={currentStep === "PIN"} onOpenChange={(open) => !open && setCurrentStep("FORM")}>
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-2xl">
+          <DialogHeader className="bg-gradient-to-r from-[#b32488] to-[#6b2c91] text-white p-4 m-0 shadow-sm flex-shrink-0">
+            <DialogTitle className="text-center font-bold">Confirm Withdrawal</DialogTitle>
+          </DialogHeader>
+          <div className="p-6 space-y-6">
+            <div className="bg-muted/50 p-4 rounded-xl space-y-2 border border-border">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-muted-foreground">Amount:</span>
+                <span className="font-bold text-foreground">₦{Number(amount).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-muted-foreground">Bank:</span>
+                <span className="font-bold text-foreground">{selectedBankName}</span>
+              </div>
+              <div className="flex justify-between items-start text-sm">
+                <span className="text-muted-foreground">Account:</span>
+                <div className="text-right">
+                  <span className="font-bold text-foreground block">{accountNumber}</span>
+                  <span className="text-xs text-muted-foreground uppercase">{accountName}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <Label>Withdrawal PIN</Label>
+                <Input 
+                  type="password" 
+                  placeholder="****" 
+                  maxLength={4} 
+                  value={pin}
+                  onChange={(e) => setPin(e.target.value)}
+                  className="h-14 text-center text-2xl tracking-[0.5em] rounded-xl mt-2" 
+                />
+              </div>
+              <Button 
+                className="w-full bg-[#b32488] hover:bg-[#8f1d6d] h-14 rounded-full text-lg mt-4 shadow-md" 
+                onClick={handleWithdrawSubmit}
+                disabled={isLoading || pin.length < 4}
+              >
+                {isLoading ? (
+                  <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Processing...</>
+                ) : (
+                  "Confirm Withdrawal"
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
     </AppLayout>
   );
 }

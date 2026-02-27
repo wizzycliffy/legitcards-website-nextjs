@@ -3,6 +3,7 @@ import { createClient } from '../../../prismicio';
 import { PrismicRichText } from '../../../components/PrismicRichText';
 import { asText } from '@prismicio/client';
 import { PrismicNextImage } from '@prismicio/next';
+import { DownloadAppCTA } from '../../../components/shared/DownloadAppCTA';
 
 type Params = { uid: string };
 
@@ -59,8 +60,9 @@ export default async function BlogPost({ params }: { params: Promise<Params> }) 
     const dateStr = page.first_publication_date ? new Date(page.first_publication_date).toLocaleDateString() : 'Unknown';
     
     return (
-      <main className="container mx-auto px-4 py-12 max-w-3xl">
-        <div className="mb-8">
+      <div className="flex flex-col min-h-screen">
+        <main className="container mx-auto px-4 py-12 max-w-3xl flex-grow">
+          <div className="mb-8">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4">{title}</h1>
           <p className="text-gray-500 mb-8 font-medium">
             Published on: {dateStr}
@@ -91,7 +93,11 @@ export default async function BlogPost({ params }: { params: Promise<Params> }) 
              );
           })}
         </div>
-      </main>
+
+        </main>
+
+        <DownloadAppCTA />
+      </div>
     );
   } catch (error) {
     notFound();
