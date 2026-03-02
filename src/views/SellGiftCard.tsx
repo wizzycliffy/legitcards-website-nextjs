@@ -88,21 +88,17 @@ export default function SellGiftCard() {
     );
   }, [rates, selectedAsset]);
 
-  // Available types given the currently-selected country (or all if none selected)
+  // Available countries – always the full list for the selected asset
+  const availableCountries = useMemo(() => {
+    return [...new Set(assetRates.map((r) => r.country))].sort();
+  }, [assetRates]);
+
+  // Available types – filtered by the selected country (country must be chosen first)
   const availableTypes = useMemo(() => {
-    const pool = country
-      ? assetRates.filter((r) => r.country === country)
-      : assetRates;
+    if (!country) return [];
+    const pool = assetRates.filter((r) => r.country === country);
     return [...new Set(pool.map((r) => r.type))].sort();
   }, [assetRates, country]);
-
-  // Available countries given the currently-selected type (or all if none selected)
-  const availableCountries = useMemo(() => {
-    const pool = cardType
-      ? assetRates.filter((r) => r.type === cardType)
-      : assetRates;
-    return [...new Set(pool.map((r) => r.country))].sort();
-  }, [assetRates, cardType]);
 
   // Resolve the matched rate whenever both type and country are set
   useEffect(() => {
@@ -457,42 +453,14 @@ export default function SellGiftCard() {
                   )}
 
                   <div className="grid md:grid-cols-2 gap-4">
-                    {/* Card Type */}
-                    <div className="space-y-2">
-                      <Label>Card Type *</Label>
-                      <Select
-                        value={cardType}
-                        onValueChange={(val) => {
-                          setCardType(val);
-                          setCountry(""); // reset country so filter re-runs
-                        }}
-                      >
-                        <SelectTrigger className="h-12 rounded-xl">
-                          <SelectValue placeholder="Select card type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {availableTypes.length > 0 ? (
-                            availableTypes.map((type) => (
-                              <SelectItem key={type} value={type}>
-                                {type}
-                              </SelectItem>
-                            ))
-                          ) : (
-                            <SelectItem value="__none" disabled>
-                              No types available
-                            </SelectItem>
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Country */}
+                    {/* Country – must be selected first */}
                     <div className="space-y-2">
                       <Label>Country *</Label>
                       <Select
                         value={country}
                         onValueChange={(val) => {
                           setCountry(val);
+                          setCardType(""); // reset card type when country changes
                         }}
                       >
                         <SelectTrigger className="h-12 rounded-xl">
@@ -507,7 +475,34 @@ export default function SellGiftCard() {
                             ))
                           ) : (
                             <SelectItem value="__none" disabled>
-                              {cardType ? "No countries for this type" : "Select type first"}
+                              No countries available
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Card Type – disabled until country is selected */}
+                    <div className="space-y-2">
+                      <Label className={cn(!country && "text-muted-foreground")}>Card Type *</Label>
+                      <Select
+                        value={cardType}
+                        onValueChange={(val) => setCardType(val)}
+                        disabled={!country}
+                      >
+                        <SelectTrigger className={cn("h-12 rounded-xl", !country && "opacity-50 cursor-not-allowed")}>
+                          <SelectValue placeholder={country ? "Select card type" : "Select country first"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableTypes.length > 0 ? (
+                            availableTypes.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="__none" disabled>
+                              No types available
                             </SelectItem>
                           )}
                         </SelectContent>

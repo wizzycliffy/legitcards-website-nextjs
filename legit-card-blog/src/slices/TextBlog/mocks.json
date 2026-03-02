@@ -1,0 +1,20 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"for_rich_text": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Anim anim Lorem mollit sint elit quis consectetur ipsum et esse et pariatur aliquip pariatur. Est pariatur do quis eu minim nulla occaecat minim commodo aliqua sint. Do magna ea aliquip proident excepteur qui proident duis do anim aliqua exercitation anim."
+						}
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

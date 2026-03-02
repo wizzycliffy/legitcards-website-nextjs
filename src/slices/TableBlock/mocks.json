@@ -1,0 +1,86 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"table": {
+				"__TYPE__": "TableContent",
+				"content": [
+					{
+						"key": "4d573eb7-92be-486b-b75b-c2037aef67ab",
+						"type": "tableRow",
+						"content": [
+							{
+								"key": "fbe449ff-3a7e-4c04-bdaa-73717378f95b",
+								"type": "tableHeader",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Eu ullamco."
+											}
+										}
+									]
+								}
+							},
+							{
+								"key": "95fe444d-99fe-4119-b2fa-c3c4dbaefb63",
+								"type": "tableHeader",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Adipisicing."
+											}
+										}
+									]
+								}
+							}
+						]
+					},
+					{
+						"key": "74e27a48-333c-485e-be6c-c19dc87752d6",
+						"type": "tableRow",
+						"content": [
+							{
+								"key": "ba485786-cbc9-4938-a702-088b135fa4e0",
+								"type": "tableCell",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Consectetur sint sunt eu consectetur non consectetur."
+											}
+										}
+									]
+								}
+							},
+							{
+								"key": "4dc92e8d-02d3-458e-b3be-712f4e338b01",
+								"type": "tableCell",
+								"content": {
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Anim pariatur sint culpa aliquip non consequat."
+											}
+										}
+									]
+								}
+							}
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

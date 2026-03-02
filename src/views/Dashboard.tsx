@@ -85,14 +85,27 @@ export default function Dashboard() {
     };
   });
 
+  const displayedCards = ['itunes', 'razor', 'steam', 'footlocker', 'sephora', 'macy']
+ 
+
+
+  console.log(rates.filter((r)=>r.country === "USA" && r.from >= 100 && r.type.includes("physical")).find((r) => r.asset.name.includes("itune")));
+
+  // console.log(rates);
+
   const uniqueRatesByName: typeof rates = [];
   for (const rate of rates) {
-    if (!uniqueRatesByName.find((r) => r.asset.name === rate.asset.name)) {
+    if (
+      rate.country === "USA" && rate.type.includes("physical") && !displayedCards.includes(rate.asset.name) && rate.from >= 100 &&
+      !uniqueRatesByName.find((r) => r.asset.name === rate.asset.name)
+    ) {
       uniqueRatesByName.push(rate);
     }
   }
 
-  const marketRates = uniqueRatesByName.slice(0, 4).map((r) => ({
+  console.log({uniqueRatesByName});
+
+  const marketRates = uniqueRatesByName.slice(0, 6).sort((a, b) => (b.rate - a.rate) ).map((r) => ({
     card: r.asset.name,
     rate: `₦${r.rate}/$`,
     trend: (Math.random() > 0.5 ? "up" : "down") as "up" | "down",

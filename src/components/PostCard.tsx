@@ -11,11 +11,12 @@ export function PostCard({ post }: { post: any }) {
     for (const slice of post.data.slices) {
       if (slice.primary) {
         const primary = slice.primary as any;
-        // Find title
+        // Find title (hero slice)
         if (title === 'Untitled' && primary.title) title = asText(primary.title);
-        // Find excerpt
-        if (!excerpt && primary.description) excerpt = asText(primary.description);
-        if (!excerpt && primary.some_ma_test_text) excerpt = asText(primary.some_ma_test_text);
+        // Find excerpt - hero description, text_blog body, or call_to_action paragraph
+        if (!excerpt && primary.description && primary.description.length > 0) excerpt = asText(primary.description);
+        if (!excerpt && primary.for_rich_text && primary.for_rich_text.length > 0) excerpt = asText(primary.for_rich_text);
+        if (!excerpt && primary.paragraph && primary.paragraph.length > 0) excerpt = asText(primary.paragraph);
         // Find image
         if (!imageField && primary.image?.url) imageField = primary.image;
       }

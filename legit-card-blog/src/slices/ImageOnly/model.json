@@ -1,0 +1,27 @@
+{
+  "id": "image_only",
+  "type": "SharedSlice",
+  "name": "ImageOnly",
+  "description": "ImageOnly",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "insert_image": {
+          "type": "Image",
+          "config": {
+            "label": "Insert Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

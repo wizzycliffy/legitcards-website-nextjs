@@ -9,6 +9,8 @@ interface BlogListWithFiltersProps {
 
 export function BlogListWithFilters({ posts }: BlogListWithFiltersProps) {
   const [activeTag, setActiveTag] = useState<string>('All');
+  console.log({posts})
+
 
   // Extract all unique tags
   const tags = useMemo(() => {
