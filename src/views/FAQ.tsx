@@ -67,7 +67,7 @@ const faqs = [
     questions: [
       {
         q: "How do I contact support?",
-        a: "You can reach our support team 24/7 via live chat on our platform, email at support@giftflow.com, or through our support ticket system.",
+        a: "You can reach our support team 24/7 via live chat on our platform, email at : support@legitcards.com.ng, or through our support ticket system.",
       },
       {
         q: "Can I cancel a trade?",
@@ -96,7 +96,7 @@ export default function FAQ() {
               Frequently Asked <span className="gradient-text">Questions</span>
             </h1>
             <p className="text-lg text-muted-foreground">
-              Find answers to common questions about trading gift cards on GiftFlow.
+              Find answers to common questions about trading gift cards on LegitCards.
               Can't find what you're looking for? Contact our support team.
             </p>
           </div>
@@ -143,7 +143,7 @@ export default function FAQ() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" size="lg">
-                Contact Support
+                <Link href={'/contact'}> Contact Support </Link>
               </Button>
               <Link href="/signup">
                 <Button variant="outline" size="lg">

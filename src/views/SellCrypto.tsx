@@ -383,15 +383,21 @@ export default function SellCrypto() {
               />
             </div>
             
-            <div className="flex justify-between items-center p-4 rounded-xl bg-primary/5 border border-primary/10">
-              <span className="text-sm text-muted-foreground">You'll Receive (estimated)</span>
-              <div className="text-right">
-                {rateLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-primary inline" />
-                ) : (
-                  <div className="font-display font-bold text-primary">₦{nairaAmount}</div>
-                )}
-                <div className="text-[10px] text-muted-foreground">Rate: ₦{activeRateValue || "0"}/$</div>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center p-4 rounded-xl bg-secondary/20 border border-border">
+                <span className="text-sm text-muted-foreground">Current Rate</span>
+                <div className="font-display font-bold">₦{activeRateValue || "0"}/$</div>
+              </div>
+              
+              <div className="flex justify-between items-center p-4 rounded-xl bg-primary/5 border border-primary/10">
+                <span className="text-sm text-muted-foreground">You'll Receive (estimated)</span>
+                <div className="text-right">
+                  {rateLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin text-primary inline" />
+                  ) : (
+                    <div className="font-display font-bold text-primary">₦{nairaAmount}</div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

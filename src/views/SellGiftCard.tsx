@@ -289,7 +289,7 @@ export default function SellGiftCard() {
           {/* Header */}
           <div className="mb-8">
             <Link
-              href="/"
+              href="/dashboard"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-4"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -558,12 +558,18 @@ export default function SellGiftCard() {
 
                   {/* Calculated payout */}
                   {amount && selectedRate && (
-                    <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">You will receive:</span>
-                        <span className="text-2xl font-display font-bold gradient-text">
-                          ₦{calculatedAmount.toLocaleString()}
-                        </span>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center p-4 rounded-xl bg-secondary/20 border border-border">
+                        <span className="text-sm text-muted-foreground">Current Rate</span>
+                        <div className="font-display font-bold">₦{selectedRate.rate}/$</div>
+                      </div>
+                      <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">You will receive (estimated):</span>
+                          <span className="text-2xl font-display font-bold gradient-text">
+                            ₦{calculatedAmount.toLocaleString()}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   )}

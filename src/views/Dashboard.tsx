@@ -24,6 +24,7 @@ import { StartTradeCTA } from "@/components/dashboard/StartTradeCTA";
 import { MarketRates } from "@/components/dashboard/MarketRates";
 import { QuickStats } from "@/components/dashboard/QuickStats";
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
+import Link from "next/link";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -159,8 +160,10 @@ export default function Dashboard() {
                     variant="outline"
                     className="w-full relative z-10 hover:bg-primary hover:text-white transition-colors"
                   >
+                    <Link href="https://wa.me/+2348060517997">
                     Chat with us
                     <ChevronRight className="w-4 h-4 ml-2" />
+                    </Link>
                   </Button>
                 </div>
               </div>

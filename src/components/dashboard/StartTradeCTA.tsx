@@ -16,7 +16,7 @@ export function StartTradeCTA() {
             <Button
               variant="glass"
               size="lg"
-              className="w-full bg-white text-primary hover:bg-white/90"
+              className="w-full bg-white text-primary-foreground hover:bg-white/90"
             >
               Sell Gift Card
               <ArrowUpRight className="w-4 h-4 ml-2" />

@@ -47,7 +47,7 @@ export function WhyChooseUsSection() {
               The Most <span className="gradient-text">Trusted</span> Gift Card Platform
             </h2>
             <p className="text-muted-foreground text-lg mb-8">
-              Join thousands of satisfied customers who trust GiftFlow for their gift card trading needs. 
+              Join thousands of satisfied customers who trust LegitCards for their gift card trading needs. 
               We've processed over $10 million in trades with a 99.9% satisfaction rate.
             </p>
 

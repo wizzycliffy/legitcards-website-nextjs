@@ -22,7 +22,7 @@ export function CTASection() {
               Ready to Trade Your Gift Cards?
             </h2>
             <p className="text-primary-foreground/80 text-lg md:text-xl max-w-2xl mx-auto mb-8">
-              Join over 100,000 users who trust GiftFlow. Start trading today and get instant cash for your gift cards.
+              Join over 100,000 users who trust LegitCards. Start trading today and get instant cash for your gift cards.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/sell">

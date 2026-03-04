@@ -12,15 +12,46 @@ export function PostCard({ post }: { post: any }) {
       if (slice.primary) {
         const primary = slice.primary as any;
         // Find title (hero slice)
-        if (title === 'Untitled' && primary.title) title = asText(primary.title);
+        if (title === 'Untitled' && primary.title && primary.title.length > 0) {
+          const textTitle = asText(primary.title).trim();
+          if (textTitle) title = textTitle;
+        }
         // Find excerpt - hero description, text_blog body, or call_to_action paragraph
-        if (!excerpt && primary.description && primary.description.length > 0) excerpt = asText(primary.description);
-        if (!excerpt && primary.for_rich_text && primary.for_rich_text.length > 0) excerpt = asText(primary.for_rich_text);
-        if (!excerpt && primary.paragraph && primary.paragraph.length > 0) excerpt = asText(primary.paragraph);
+        if (!excerpt && primary.description && primary.description.length > 0) {
+          const text = asText(primary.description).trim();
+          if (text) excerpt = text;
+        }
+        if (!excerpt && primary.for_rich_text && primary.for_rich_text.length > 0) {
+          const text = asText(primary.for_rich_text).trim();
+          if (text) excerpt = text;
+        }
+        if (!excerpt && primary.paragraph && primary.paragraph.length > 0) {
+          const text = asText(primary.paragraph).trim();
+          if (text) excerpt = text;
+        }
         // Find image
         if (!imageField && primary.image?.url) imageField = primary.image;
       }
     }
+  }
+
+  // Fallback to root level items
+  if (title === 'Untitled' && post.data.title && post.data.title.length > 0) {
+    const textTitle = asText(post.data.title).trim();
+    if (textTitle) title = textTitle;
+  }
+  if (!excerpt && post.data.content && post.data.content.length > 0) {
+    const textContent = asText(post.data.content).trim();
+    if (textContent) excerpt = textContent;
+  }
+  if (!excerpt && post.data.meta_description && typeof post.data.meta_description === 'string') {
+    excerpt = post.data.meta_description;
+  }
+  if (!imageField && post.data.featured_image?.url) {
+    imageField = post.data.featured_image;
+  }
+  if (!imageField && post.data.meta_image?.url) {
+    imageField = post.data.meta_image;
   }
 
   // Fallback excerpt and shorten

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Search, Filter, CheckCircle, Clock, XCircle, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, Search, Filter, CheckCircle, Clock, XCircle, AlertCircle, Loader2, Bitcoin, Wallet } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,6 +86,22 @@ export default function TradeHistory() {
       case "ATTENTION": return <AlertCircle className="w-4 h-4" />;
       default: return null;
     }
+  };
+
+  const getCryptoIcon = (name: string) => {
+    const key = name?.toLowerCase() || "";
+    if (key.includes("btc") || key.includes("bitcoin")) return <Bitcoin className="w-6 h-6" />;
+    if (key.includes("eth") || key.includes("ethereum")) return <Wallet className="w-6 h-6" />;
+    if (key.includes("usdt") || key.includes("tether")) return <span className="text-xl font-bold">₮</span>;
+    return <span className="font-bold text-lg">{name?.charAt(0)}</span>;
+  };
+
+  const getCryptoColor = (name: string) => {
+    const key = name?.toLowerCase() || "";
+    if (key.includes("btc") || key.includes("bitcoin")) return "bg-orange-500/10 text-orange-500";
+    if (key.includes("eth") || key.includes("ethereum")) return "bg-blue-500/10 text-blue-500";
+    if (key.includes("usdt") || key.includes("tether")) return "bg-green-500/10 text-green-500";
+    return "bg-primary/10 text-primary";
   };
 
   // Enhance trades with asset info (now directly available)
@@ -194,7 +210,10 @@ export default function TradeHistory() {
                 >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div className={cn(
+                          "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden",
+                          category === "CRYPTO" ? getCryptoColor((trade as any).assetName) : "bg-primary/10 text-primary"
+                        )}>
                            {category === "WITHDRAWS" ? (
                              <span className="font-bold text-lg">{(trade as any).bankName?.charAt(0) || "W"}</span>
                            ) : category === "GIFTCARD" ? (
@@ -204,11 +223,7 @@ export default function TradeHistory() {
                                <span className="font-bold text-lg">{(trade as any).assetName?.charAt(0)}</span>
                              )
                            ) : (
-                             (trade as any).assetImage && (trade as any).assetImage.length > 0 ? (
-                               <img src={(trade as any).assetImage[0]} alt="Trade" className="w-full h-full object-cover" />
-                             ) : (
-                               <span className="font-bold text-lg">{(trade as any).assetName?.charAt(0)}</span>
-                             )
+                             getCryptoIcon((trade as any).assetName)
                            )}
                         </div>
                         <div>

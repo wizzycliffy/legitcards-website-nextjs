@@ -31,8 +31,8 @@ export function BlogListWithFilters({ posts }: BlogListWithFiltersProps) {
 
   return (
     <div>
-      {/* Scrollable Tabs Container */}
-      <div className="flex overflow-x-auto gap-3 pb-4 mb-10 scrollbar-hide border-b border-gray-200 dark:border-gray-800">
+      {/* Tags Filter Container */}
+      <div className="flex flex-wrap gap-3 pb-4 mb-10 border-b border-gray-200 dark:border-gray-800">
         {tags.map((tag) => (
           <button
             key={tag}

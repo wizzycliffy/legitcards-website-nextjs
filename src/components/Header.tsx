@@ -38,10 +38,10 @@ export default function Header({wallet, user, handleLogout}: {wallet: any, user:
             <Wallet className="w-4 h-4 text-primary" />
             <span className="font-semibold">₦{mounted ? (wallet?.balance?.toLocaleString() || "0") : "0"}</span>
           </div>
-          <Button variant="ghost" size="icon" className="relative">
+          {/* <Button variant="ghost" size="icon" className="relative">
             <Bell className="w-5 h-5" />
             <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-destructive" />
-          </Button>
+          </Button> */}
           <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -42,7 +42,7 @@ export function SupportedCardsSection() {
         </div>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        {/* <div className="flex flex-wrap justify-center gap-2 mb-12">
           {cardCategories.map((category) => (
             <button
               key={category}
@@ -57,14 +57,14 @@ export function SupportedCardsSection() {
               {category}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Cards Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredCards.map((card, index) => (
             <div
               key={card.name}
-              className="group bg-card rounded-2xl sm:p-5 p-4 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 cursor-pointer animate-scale-in"
+              className="flex flex-col items-center justify-center group bg-card rounded-2xl sm:p-5 p-4 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 cursor-pointer animate-scale-in"
               style={{ animationDelay: `${index * 50}ms` }}
             >
               {/* Card Icon */}
@@ -80,8 +80,8 @@ export function SupportedCardsSection() {
               {/* Card Info */}
               <h3 className="font-semibold mb-1 ">{card.name}</h3>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">{card.category}</span>
-                <span className="text-sm font-semibold text-primary">{card.rate}</span>
+                {/* <span className="text-sm text-muted-foreground">{card.category}</span>
+                <span className="text-sm font-semibold text-primary">{card.rate}</span> */}
               </div>
             </div>
           ))}

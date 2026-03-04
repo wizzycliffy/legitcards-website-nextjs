@@ -1,27 +1,19 @@
 'use client';
 
 import Link from "next/link";
-import {
-  Gift,
-  Mail,
-  Phone,
-  MapPin,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-} from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, Gift, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AppDownloadButtons } from "@/components/AppDownloadButtons";
 
 const footerLinks = {
   company: [
     { name: "About Us", path: "/about" },
-    { name: "Careers", path: "/careers" },
-    { name: "Press", path: "/press" },
+    // { name: "Careers", path: "/careers" },
+    // { name: "Press", path: "/press" },
     { name: "Blog", path: "/blog" },
   ],
   support: [
-    { name: "Help Center", path: "/help" },
+    // { name: "Help Center", path: "/help" },
     { name: "Contact Us", path: "/contact" },
     { name: "FAQs", path: "/faq" },
     { name: "Live Chat", path: "/chat" },
@@ -66,23 +58,29 @@ export function Footer() {
               </span>
             </Link>
 
-            <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
+            <p className="text-sm text-muted-foreground max-w-md leading-relaxed mb-6">
               The fastest and most secure platform to trade your gift cards for
               instant cash. Join over 100,000 satisfied users today.
             </p>
 
+            {/* App Download Call to Action */}
+            <div className="mb-8 pt-2">
+              <p className="font-display font-semibold mb-4">Trade on the Go</p>
+              <AppDownloadButtons buttonClassName="scale-90 origin-left" />
+            </div>
+
             <div className="space-y-3 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary" />
-                <span>support@legitcard.com</span>
+                <span>support@legitcards.com.ng</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary" />
-                <span>+1 (800) 123-4567</span>
+                <span>+234-806-051-7997</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-primary" />
-                <span>Lagos, Nigeria</span>
+                <span>NO.1, Nanka Street, Lakowe, Lekki, Lagos State, 105101</span>
               </div>
             </div>
           </div>
@@ -148,6 +146,8 @@ export function Footer() {
           <p className="text-sm text-muted-foreground text-center md:text-left">
             © {new Date().getFullYear()} Legitcard. All rights reserved.
           </p>
+
+          <p className="text-sm text-muted-foreground text-center md:text-left">"All third-party trademarks appearing on this website are the property of their respective owners. Legitcards is not affiliated to or endorsed by any brand who's trademarks or gift cards appears on this website."</p>
 
           <div className="flex justify-center md:justify-end gap-2">
             {socialLinks.map((social, index) => (

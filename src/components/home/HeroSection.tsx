@@ -12,7 +12,7 @@ export function HeroSection() {
     if (isAuthenticated) {
       router.push("/dashboard");
     } else {
-      router.push("/signup");
+      router.push("/login");
     }
   };
 
@@ -55,11 +55,11 @@ export function HeroSection() {
                 Start Trading
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Link href="/blog">
+              {/* <Link href="/blog">
                 <Button variant="outline" size="xl" className="w-full h-[50px] md:rounded-2xl rounded-lg sm:w-auto">
                   Our Blog
                 </Button>
-              </Link>
+              </Link> */}
               {!isAuthenticated && (
                 <Link href="/signup">
                   <Button variant="outline" size="xl" className="w-full h-[50px] md:rounded-2xl rounded-lg sm:w-auto">

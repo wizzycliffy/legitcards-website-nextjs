@@ -23,13 +23,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchWallet, fetchBanks, initiateWithdrawal, validateBankAccount, fetchBankAccounts } from "@/store/slices/walletSlice";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { cn } from "@/lib/utils";
 
 export default function Withdraw() {
   const router = useRouter();
   const { toast } = useToast();
   const { user } = useAuth();
   const dispatch = useAppDispatch();
-  const { wallet, banks, isLoading } = useAppSelector((state) => state.wallet);
+  const { wallet, banks, bankAccounts, isLoading } = useAppSelector((state) => state.wallet);
 
   const [selectedBank, setSelectedBank] = useState("");
   const [selectedBankName, setSelectedBankName] = useState("");
@@ -204,6 +205,51 @@ export default function Withdraw() {
 
           {/* Withdrawal Form */}
           <div className="bg-card rounded-2xl border border-border shadow-card p-6 space-y-6">
+            
+            {/* NEW: Saved Bank Accounts */}
+            {bankAccounts && bankAccounts.length > 0 && (
+              <div className="space-y-3 mb-2">
+                <Label>Saved Bank Accounts</Label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {bankAccounts.map((account) => (
+                    <div 
+                      key={account._id}
+                      onClick={() => {
+                        const matchedBank = banks.find(b => b.name.toLowerCase() === account.bankName.toLowerCase() || b.code === account.bankCode);
+                        if (matchedBank) {
+                          setSelectedBank(matchedBank.code);
+                          setSelectedBankName(matchedBank.name);
+                        }
+                        setAccountNumber(account.accountNumber);
+                        setAccountName(account.accountName);
+                      }}
+                      className={cn(
+                        "p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between group",
+                        accountNumber === account.accountNumber 
+                          ? "border-primary bg-primary/5" 
+                          : "border-border hover:border-primary/50 bg-secondary/10"
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                          <Building2 className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm">{account.bankName}</p>
+                          <p className="text-xs text-muted-foreground">{account.accountNumber}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="relative flex items-center py-4">
+                  <div className="flex-grow border-t border-border"></div>
+                  <span className="flex-shrink-0 mx-4 text-xs text-muted-foreground uppercase">Or enter new details</span>
+                  <div className="flex-grow border-t border-border"></div>
+                </div>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="bank">Select Bank</Label>
               <Select 

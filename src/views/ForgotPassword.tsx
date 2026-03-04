@@ -56,7 +56,7 @@ export default function ForgotPassword() {
             <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
               <Gift className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-display font-bold gradient-text">GiftFlow</span>
+            <span className="text-xl font-display font-bold gradient-text">LegitCards</span>
           </Link>
           <ThemeToggle />
         </div>
