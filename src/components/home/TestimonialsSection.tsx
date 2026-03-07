@@ -1,31 +1,36 @@
 import { Star, Quote } from "lucide-react";
+import Image from "next/image";
+import user1 from "@/assets/user1.jpeg";
+import user2 from "@/assets/user2.jpeg";
+import user3 from "@/assets/user3.jpeg";
+import user4 from "@/assets/user4.jpeg";
 
 const testimonials = [
   {
     name: "Adaeze Okoro",
     role: "Regular Trader",
-    avatar: "A",
+    avatar: user1,
     rating: 5,
     comment: "Legitcard is amazing! I've been trading my gift cards here for over a year and never had any issues. The rates are great and payments are instant.",
   },
   {
     name: "Chukwuemeka Nwosu",
     role: "Business Owner",
-    avatar: "C",
+    avatar: user2,
     rating: 5,
     comment: "As someone who receives a lot of gift cards, this platform has been a lifesaver. Fast, reliable, and the customer support is top-notch!",
   },
   {
     name: "Funke Adeleke",
     role: "Student",
-    avatar: "F",
+    avatar: user3,
     rating: 5,
     comment: "I was skeptical at first, but Legitcard proved me wrong. Got my payment in less than 5 minutes. Highly recommended!",
   },
   {
     name: "Ibrahim Sani",
     role: "Freelancer",
-    avatar: "I",
+    avatar: user4,
     rating: 5,
     comment: "The best gift card trading platform I've used. The interface is clean, rates are competitive, and the process is seamless.",
   },
@@ -34,7 +39,7 @@ const testimonials = [
 export function TestimonialsSection() {
   return (
     <section className="py-16 md:py-24 px-[2vw] gradient-secondary">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
@@ -74,8 +79,8 @@ export function TestimonialsSection() {
 
               {/* Author */}
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center text-primary-foreground font-bold">
-                  {testimonial.avatar}
+                <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center text-primary-foreground font-bold overflow-hidden">
+                  <Image src={testimonial.avatar} alt={testimonial.name} width={48} height={48} className="object-cover w-full h-full" />
                 </div>
                 <div>
                   <div className="font-semibold">{testimonial.name}</div>

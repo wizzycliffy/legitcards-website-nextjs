@@ -96,7 +96,7 @@ export default async function BlogPost({ params }: { params: Promise<Params> }) 
 
     return (
       <div className="flex flex-col min-h-screen">
-        <main className="container mx-auto px-4 py-12 max-w-3xl flex-grow">
+        <main className="container mx-auto px-6 lg:px-10 py-12 max-w-3xl flex-grow">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4">

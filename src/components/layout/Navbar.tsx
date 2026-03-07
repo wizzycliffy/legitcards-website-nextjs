@@ -62,7 +62,7 @@ export function Navbar() {
     <>
       {/* Top Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass px-[1vw] border-b border-border/50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link

@@ -93,7 +93,7 @@ export const fetchWithdrawals = createAsyncThunk(
   'wallet/fetchWithdrawals',
   async ({ userId, page = 1, size = 20 }: { userId: string; page?: number; size?: number }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}/withdraw/request?page=${page}&size=${size}`, {
+      const response = await fetch(`${BASE_URL}/withdraw/user/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export const fetchWithdrawals = createAsyncThunk(
       });
       const data = await response.json();
       if (!response.ok) return rejectWithValue(data.message || 'Failed to fetch withdrawals');
-      return data.data || [];
+      return data.record || [];
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

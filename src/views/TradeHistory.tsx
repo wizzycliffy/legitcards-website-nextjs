@@ -122,7 +122,7 @@ export default function TradeHistory() {
   return (
     <AppLayout>
       <div className="min-h-screen bg-background py-8">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
               <Link

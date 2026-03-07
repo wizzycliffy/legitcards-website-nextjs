@@ -285,7 +285,7 @@ export default function SellGiftCard() {
   return (
     <AppLayout>
       <div className="min-h-[calc(100vh-80px)] gradient-hero py-8">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 lg:px-10">
           {/* Header */}
           <div className="mb-8">
             <Link

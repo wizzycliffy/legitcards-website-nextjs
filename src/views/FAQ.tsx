@@ -86,7 +86,7 @@ export default function FAQ() {
     <MainLayout>
       <div className="min-h-screen gradient-hero">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 py-16 md:py-24">
+        <section className="container mx-auto px-6 lg:px-10 py-16 md:py-24">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
               <HelpCircle className="w-4 h-4 text-primary" />
@@ -103,7 +103,7 @@ export default function FAQ() {
         </section>
 
         {/* FAQ Accordion */}
-        <section className="container mx-auto px-4 pb-16 md:pb-24">
+        <section className="container mx-auto px-6 lg:px-10 pb-16 md:pb-24">
           <div className="max-w-4xl mx-auto space-y-8">
             {faqs.map((category, idx) => (
               <div key={idx} className="glass rounded-2xl p-6 md:p-8">
@@ -132,7 +132,7 @@ export default function FAQ() {
         </section>
 
         {/* Contact CTA */}
-        <section className="container mx-auto px-4 pb-16 md:pb-24">
+        <section className="container mx-auto px-6 lg:px-10 pb-16 md:pb-24">
           <div className="max-w-4xl mx-auto glass rounded-2xl p-8 md:p-12 text-center">
             <MessageCircle className="w-12 h-12 text-primary mx-auto mb-4" />
             <h3 className="text-2xl font-display font-bold mb-3">

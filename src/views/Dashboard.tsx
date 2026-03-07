@@ -117,7 +117,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Header wallet={wallet} user={user} handleLogout={handleLogout} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-6 lg:px-10 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-display font-bold">
             Welcome back, {user?.email.split("@")[0]}!

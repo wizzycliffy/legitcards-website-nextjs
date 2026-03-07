@@ -92,7 +92,7 @@ export default function GiftCards() {
     <MainLayout>
       <div className="min-h-screen gradient-hero">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 py-16 md:py-24">
+        <section className="container mx-auto px-6 lg:px-10 py-16 md:py-24">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
               <Gift className="w-4 h-4 text-primary" />
@@ -122,7 +122,7 @@ export default function GiftCards() {
 
         {/* Popular Cards */}
         {!searchQuery && (
-          <section className="container mx-auto px-4 pb-12">
+          <section className="container mx-auto px-6 lg:px-10 pb-12">
             <div className="flex items-center gap-2 mb-6">
               <TrendingUp className="w-5 h-5 text-primary" />
               <h2 className="text-xl font-display font-semibold">Popular Cards</h2>
@@ -147,7 +147,7 @@ export default function GiftCards() {
         )}
 
         {/* All Cards by Category */}
-        <section className="container mx-auto px-4 pb-16 md:pb-24">
+        <section className="container mx-auto px-6 lg:px-10 pb-16 md:pb-24">
           <div className="space-y-12">
             {filteredCategories.map((category, idx) => (
               <div key={idx}>
@@ -182,7 +182,7 @@ export default function GiftCards() {
         </section>
 
         {/* CTA Section */}
-        <section className="container mx-auto px-4 pb-16 md:pb-24">
+        <section className="container mx-auto px-6 lg:px-10 pb-16 md:pb-24">
           <div className="glass rounded-2xl p-8 md:p-12 text-center">
             <h3 className="text-2xl font-display font-bold mb-3">
               Don't see your card?

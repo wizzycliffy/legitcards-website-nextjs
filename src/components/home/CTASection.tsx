@@ -9,7 +9,7 @@ export function CTASection() {
      
       style={{ backgroundImage: `url(${ctabackground})`  
     }}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 lg:px-10">
         <div className="relative overflow-hidden rounded-3xl  p-8 md:p-12 lg:p-16">
           {/* Background decoration */}
           <div className="absolute inset-0 overflow-hidden">

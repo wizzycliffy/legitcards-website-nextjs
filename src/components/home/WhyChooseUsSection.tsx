@@ -36,7 +36,7 @@ const features = [
 export function WhyChooseUsSection() {
   return (
     <section className="py-16 md:py-24 px-[1vw] bg-background">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
           <div>

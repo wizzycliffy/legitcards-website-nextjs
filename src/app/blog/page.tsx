@@ -27,7 +27,7 @@ export default async function BlogPage() {
   return (
     <>
     <div className="flex flex-col min-h-screen">
-      <main className="container mx-auto px-4 py-12 max-w-6xl flex-grow">
+      <main className="container mx-auto px-6 lg:px-10 py-12 max-w-6xl flex-grow">
         <div className="mb-12">
           <h1 className="text-4xl font-bold mb-4">Blog</h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">Discover our latest news and articles.</p>

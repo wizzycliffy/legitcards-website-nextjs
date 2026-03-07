@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const protectedPaths = ['/dashboard', '/profile', '/sell-crypto', '/withdraw', '/trade-history'];
+const protectedPaths = ['/dashboard', '/profile', '/sell-crypto', '/withdraw', '/trade-history', '/sell'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -13,6 +13,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
+  
 
   return NextResponse.next();
 }
@@ -24,5 +25,6 @@ export const config = {
     '/sell-crypto/:path*',
     '/withdraw/:path*',
     '/trade-history/:path*',
+    '/sell/:path*',
   ],
 };

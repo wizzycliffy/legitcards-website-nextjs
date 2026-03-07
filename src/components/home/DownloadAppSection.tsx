@@ -1,11 +1,13 @@
 import React from 'react';
 import { Smartphone } from 'lucide-react';
+import Image from 'next/image';
 import { AppDownloadButtons } from '@/components/AppDownloadButtons';
+import legitMock from '@/assets/legitMock.png';
 
 export function DownloadAppSection() {
   return (
     <section className="py-20 bg-secondary/30 border-y border-border">
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-6 lg:px-10 md:px-6">
         <div className="max-w-5xl mx-auto bg-card rounded-3xl border border-border shadow-soft overflow-hidden relative group">
           
           {/* Decorative background elements */}
@@ -35,24 +37,13 @@ export function DownloadAppSection() {
             </div>
             
             {/* Visual/Image Side */}
-            <div className="flex-1 w-full max-w-sm md:max-w-md animate-float">
-              <div className="relative mx-auto w-48 md:w-64 aspect-[1/2] rounded-[2.5rem] border-8 border-foreground/10 bg-background overflow-hidden shadow-2xl">
-                {/* Simulated Screen */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-blue-500/20">
-                  <div className="p-4 space-y-4">
-                    <div className="w-full h-8 bg-foreground/5 rounded-full"></div>
-                    <div className="w-full aspect-video bg-primary/20 rounded-xl mb-6"></div>
-                    <div className="w-3/4 h-4 bg-foreground/10 rounded-full"></div>
-                    <div className="w-1/2 h-4 bg-foreground/10 rounded-full"></div>
-                    <div className="grid grid-cols-2 gap-2 mt-8">
-                      <div className="w-full h-16 bg-blue-500/20 rounded-xl"></div>
-                      <div className="w-full h-16 bg-primary/20 rounded-xl"></div>
-                    </div>
-                  </div>
-                </div>
-                {/* Phone Top Notch */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-foreground/10 rounded-b-xl"></div>
-              </div>
+            <div className="flex-1 w-full max-w-sm md:max-w-md animate-float relative flex justify-center">
+                 <Image 
+                   src={legitMock} 
+                   alt="Legit Cards Mobile App" 
+                   className="w-auto h-[400px] md:h-[500px] object-contain drop-shadow-2xl"
+                   priority
+                 />
             </div>
 
           </div>
