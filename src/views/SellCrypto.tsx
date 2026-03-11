@@ -38,7 +38,7 @@ const HARDCODED_ADDRESSES: Record<string, string> = {
 };
 
 const HARDCODED_NETWORKS = [
-  { name: "TRC20 (Tron)", _id: "trc20" },
+  { name: "TRON (TRC20)", _id: "trc20" },
   { name: "ERC20 (Ethereum)", _id: "erc20" },
   { name: "BEP20 (BSC)", _id: "bep20" },
 ];
@@ -107,31 +107,13 @@ export default function SellCrypto() {
     };
   }, [dispatch]);
 
-  // When a USDT coin is selected, fetch its networks
+  // Fetch rate when coin is selected — mobile always uses base coin name (USDT/BTC/ETH)
+  // Network only controls which wallet address is shown, NOT the rate endpoint
   useEffect(() => {
-    if (selectedCoin && isUsdt) {
-      // dispatch(fetchCryptoNetworks(selectedCoin._id));
-    }
-    console.log({selectedCoin})
-    console.log({user})
-
-    // Fetch appropriate rate when coin or network changes
     if (selectedCoin && user?.userid) {
-      const coinNameNormalized = selectedCoin.name.toLowerCase();
-      let rateName = selectedCoin.name;
-
-      if (coinNameNormalized === "usdt") {
-        if (selectedNetwork) {
-          rateName = `usdt_${selectedNetwork._id.toLowerCase()}`;
-        } else {
-          return;
-        }
-      }
-      console.log({rateName})
-
-      dispatch(fetchCryptoRate({ coinName: rateName, userId: user.userid }));
+      dispatch(fetchCryptoRate({ coinName: selectedCoin.name, userId: user.userid }));
     }
-  }, [selectedCoin, isUsdt, selectedNetwork, user?.userid, dispatch]);
+  }, [selectedCoin, user?.userid, dispatch]);
 
   // Default network for USDT
   useEffect(() => {
@@ -312,8 +294,12 @@ export default function SellCrypto() {
   const renderWallet = () => {
     const coinName = selectedCoin?.name?.toUpperCase() ?? "";
     const networkLabel = isUsdt && selectedNetwork
-      ? ` (${selectedNetwork.name || selectedNetwork.symbol})`
+      ? ` (${selectedNetwork.name})`
       : "";
+    const availableNetworks = networks.length > 0 ? networks : HARDCODED_NETWORKS;
+
+    // For USDT: show only network picker until a network is selected
+    const showAddressCard = !isUsdt || (isUsdt && selectedNetwork);
 
     return (
       <div className="max-w-md mx-auto space-y-6 animate-fade-in">
@@ -322,120 +308,129 @@ export default function SellCrypto() {
           <div className="space-y-3">
             <Label className="text-sm font-semibold">Select Network</Label>
             <div className="grid grid-cols-3 gap-2">
-              {(networks.length > 0 ? networks : HARDCODED_NETWORKS).map((net) => (
+              {availableNetworks.map((net) => (
                 <button
                   key={net._id}
                   onClick={() => setSelectedNetwork(net)}
                   className={cn(
-                    "py-2 px-3 rounded-xl border text-xs font-medium transition-all",
+                    "py-3 px-3 rounded-xl border text-xs font-semibold transition-all",
                     selectedNetwork?._id === net._id
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-border bg-card hover:border-primary/50",
                   )}
                 >
-                  {net.name?.split(" ")[0] || (net as any).symbol}
+                  {net.name}
                 </button>
               ))}
+            </div>
+            {!selectedNetwork && (
+              <p className="text-xs text-muted-foreground text-center pt-1">
+                Please select a network to see the wallet address
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Address card — shown only after network selection for USDT */}
+        {showAddressCard && (
+          <div className="bg-card border border-border rounded-2xl p-6 shadow-card">
+            <h2 className="text-lg font-display font-bold mb-1">
+              Send {coinName}{networkLabel}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-5">
+              Send your crypto to the address below and enter the amount you sent.
+            </p>
+
+            {/* QR code */}
+            <div className="flex justify-center mb-5">
+              <div className="p-3 rounded-2xl border border-border bg-white">
+                <img
+                  key={walletAddress}
+                  src={qrUrl}
+                  alt="Wallet QR Code"
+                  className="w-44 h-44"
+                />
+              </div>
+            </div>
+
+            {/* Address */}
+            <div className="relative bg-muted rounded-xl p-4 mb-4">
+              <Label className="text-xs text-muted-foreground uppercase mb-1 block">
+                Wallet Address
+              </Label>
+              <p className="font-mono text-sm break-all pr-10">{walletAddress}</p>
+              <button
+                onClick={() => copyToClipboard(walletAddress)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-border transition-colors"
+              >
+                <Copy className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </div>
+
+            {/* Amount */}
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label htmlFor="amount">Amount Sent (USD)</Label>
+                {minAmount > 0 && (
+                  <span className="text-xs text-muted-foreground">Min Amount: ${minAmount}</span>
+                )}
+              </div>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                <Input
+                  id="amount"
+                  type="number"
+                  placeholder={minAmount ? `Min: ${minAmount}` : "0.00"}
+                  className="pl-8 h-12"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-4 rounded-xl bg-secondary/20 border border-border">
+                  <span className="text-sm text-muted-foreground">Current Rate</span>
+                  <div className="font-display font-bold">₦{activeRateValue || "0"}/$</div>
+                </div>
+                
+                <div className="flex justify-between items-center p-4 rounded-xl bg-primary/5 border border-primary/10">
+                  <span className="text-sm text-muted-foreground">You'll Receive (estimated)</span>
+                  <div className="text-right">
+                    {rateLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-primary inline" />
+                    ) : (
+                      <div className="font-display font-bold text-primary">₦{nairaAmount}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-2">
+              <Info className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+              <p className="text-xs text-amber-600 dark:text-amber-400">
+                Only send {coinName} to this address. Sending any other asset may result in permanent loss.
+              </p>
             </div>
           </div>
         )}
 
-        {/* Address card */}
-        <div className="bg-card border border-border rounded-2xl p-6 shadow-card">
-          <h2 className="text-lg font-display font-bold mb-1">
-            Send {coinName}{networkLabel}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-5">
-            Send your crypto to the address below and enter the amount you sent.
-          </p>
-
-          {/* QR code */}
-          <div className="flex justify-center mb-5">
-            <div className="p-3 rounded-2xl border border-border bg-white">
-              <img
-                key={walletAddress}
-                src={qrUrl}
-                alt="Wallet QR Code"
-                className="w-44 h-44"
-              />
-            </div>
-          </div>
-
-          {/* Address */}
-          <div className="relative bg-muted rounded-xl p-4 mb-4">
-            <Label className="text-xs text-muted-foreground uppercase mb-1 block">
-              Wallet Address
-            </Label>
-            <p className="font-mono text-sm break-all pr-10">{walletAddress}</p>
-            <button
-              onClick={() => copyToClipboard(walletAddress)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-border transition-colors"
-            >
-              <Copy className="w-4 h-4 text-muted-foreground" />
-            </button>
-          </div>
-
-          {/* Amount */}
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <Label htmlFor="amount">Amount Sent (USD)</Label>
-              {minAmount > 0 && (
-                <span className="text-xs text-muted-foreground">Min Amount: ${minAmount}</span>
-              )}
-            </div>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-              <Input
-                id="amount"
-                type="number"
-                placeholder={minAmount ? `Min: ${minAmount}` : "0.00"}
-                className="pl-8 h-12"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-              />
-            </div>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-4 rounded-xl bg-secondary/20 border border-border">
-                <span className="text-sm text-muted-foreground">Current Rate</span>
-                <div className="font-display font-bold">₦{activeRateValue || "0"}/$</div>
-              </div>
-              
-              <div className="flex justify-between items-center p-4 rounded-xl bg-primary/5 border border-primary/10">
-                <span className="text-sm text-muted-foreground">You'll Receive (estimated)</span>
-                <div className="text-right">
-                  {rateLoading ? (
-                    <Loader2 className="w-4 h-4 animate-spin text-primary inline" />
-                  ) : (
-                    <div className="font-display font-bold text-primary">₦{nairaAmount}</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-2">
-            <Info className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-            <p className="text-xs text-amber-600 dark:text-amber-400">
-              Only send {coinName} to this address. Sending any other asset may result in permanent loss.
-            </p>
-          </div>
-        </div>
-
-        <Button
-          variant="gradient"
-          size="lg"
-          className="w-full"
-          onClick={() => {
-            if (!amount || Number(amount) <= 0) {
-              toast({ title: "Enter the amount you sent", variant: "destructive" });
-              return;
-            }
-            setCurrentStep("upload");
-          }}
-        >
-          I've Sent the Crypto
-        </Button>
+        {showAddressCard && (
+          <Button
+            variant="gradient"
+            size="lg"
+            className="w-full"
+            onClick={() => {
+              if (!amount || Number(amount) <= 0) {
+                toast({ title: "Enter the amount you sent", variant: "destructive" });
+                return;
+              }
+              setCurrentStep("upload");
+            }}
+          >
+            I've Sent the Crypto
+          </Button>
+        )}
       </div>
     );
   };
