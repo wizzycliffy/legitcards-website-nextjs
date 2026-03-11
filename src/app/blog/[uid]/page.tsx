@@ -3,6 +3,7 @@ import { createClient } from '../../../prismicio';
 import { PrismicRichText } from '../../../components/PrismicRichText';
 import { asText } from '@prismicio/client';
 import { PrismicNextImage, PrismicNextLink } from '@prismicio/next';
+import { MainLayout } from '../../../components/layout/MainLayout';
 import { DownloadAppCTA } from '../../../components/shared/DownloadAppCTA';
 
 type Params = { uid: string };
@@ -95,14 +96,14 @@ export default async function BlogPost({ params }: { params: Promise<Params> }) 
         : 'Unknown';
 
     return (
-      <div className="flex flex-col min-h-screen">
-        <main className="container mx-auto px-6 lg:px-10 py-12 max-w-3xl flex-grow">
+      <MainLayout>
+        <div className="container mx-auto px-6 lg:px-10 py-12 max-w-3xl">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
               {title}
             </h1>
-            <p className="text-gray-500 mb-8 font-medium">Published on: {dateStr}</p>
+            <p className="text-muted-foreground mb-8 font-medium">Published on: {dateStr}</p>
 
             {mainImage && (
               <div className="relative w-full aspect-[2/1] rounded-xl overflow-hidden mb-12 shadow-sm">
@@ -169,10 +170,9 @@ export default async function BlogPost({ params }: { params: Promise<Params> }) 
               return null;
             })}
           </div>
-        </main>
-
+        </div>
         <DownloadAppCTA />
-      </div>
+      </MainLayout>
     );
   } catch {
     notFound();

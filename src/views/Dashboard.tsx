@@ -83,7 +83,8 @@ export default function Dashboard() {
       status: t.status.toLowerCase(),
       date: new Date(typeof t.createdAt === "number" ? t.createdAt : t.createdAt).toLocaleDateString(),
       type: isCrypto ? "crypto" : "giftcard",
-    };
+      assetImage: Array.isArray((t as any).assetImage) ? (t as any).assetImage : undefined,
+    } as const;
   });
 
   const displayedCards = ['itunes', 'razor', 'steam', 'footlocker', 'sephora', 'macy']
@@ -158,9 +159,9 @@ export default function Dashboard() {
                   </div>
                   <Button
                     variant="outline"
-                    className="w-full relative z-10 hover:bg-primary hover:text-white transition-colors"
+                    className=" w-full relative z-10 hover:bg-primary hover:text-white transition-colors"
                   >
-                    <Link href="https://wa.me/+2348060517997">
+                    <Link className="flex items-center gap-2" href="https://wa.me/+2348060517997">
                     Chat with us
                     <ChevronRight className="w-4 h-4 ml-2" />
                     </Link>

@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import headerLogo from "@/assets/new header logo.png";
 import {
   Menu,
   X,
-  Gift,
   User,
   LogOut,
   Home,
-  CreditCard,
   HelpCircle,
   LayoutDashboard,
   BookText,
@@ -23,7 +23,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   { name: "Homepage", path: "/", icon: Home },
-  { name: "Contact Support", path: "/contact", icon: MessageCircleQuestion },
+  { name: "Contact Us", path: "/contact", icon: MessageCircleQuestion },
   { name: "Blog", path: "/blog", icon: BookText },
   { name: "FAQ", path: "/faq", icon: HelpCircle },
 ];
@@ -68,14 +68,15 @@ export function Navbar() {
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2"
+              className="flex items-center"
             >
-              <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center">
-                <Gift className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="text-lg font-bold gradient-text">
-                Legitcard
-              </span>
+              <Image
+                src={headerLogo}
+                alt="LegitCards"
+                height={36}
+                className="h-9 w-auto"
+                priority
+              />
             </Link>
 
             {/* Desktop Nav */}

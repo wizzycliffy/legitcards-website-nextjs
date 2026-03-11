@@ -7,22 +7,19 @@ import { AppDownloadButtons } from "@/components/AppDownloadButtons";
 
 const footerLinks = {
   company: [
-    { name: "About Us", path: "/about" },
-    // { name: "Careers", path: "/careers" },
-    // { name: "Press", path: "/press" },
+    { name: "FAQs", path: "/faq" },
     { name: "Blog", path: "/blog" },
+    { name: "Contact Us", path: "/contact" },
   ],
   support: [
-    // { name: "Help Center", path: "/help" },
-    { name: "Contact Us", path: "/contact" },
     { name: "FAQs", path: "/faq" },
-    { name: "Live Chat", path: "/chat" },
+    { name: "Live Chat", path: "/contact" },
+    { name: "Account Deletion", path: "/account-deletion" },
   ],
   legal: [
     { name: "Terms of Service", path: "/terms" },
     { name: "Privacy Policy", path: "/privacy" },
-    { name: "Cookie Policy", path: "/cookies" },
-    { name: "AML Policy", path: "/aml" },
+    { name: "Account Deletion", path: "/account-deletion" },
   ],
 };
 
@@ -44,7 +41,7 @@ export function Footer() {
           grid-cols-1
           sm:grid-cols-2
           md:grid-cols-3
-          lg:grid-cols-5
+          lg:grid-cols-6
         ">
 
           {/* Brand / Info */}
@@ -68,18 +65,22 @@ export function Footer() {
               <p className="font-display font-semibold mb-4">Trade on the Go</p>
               <AppDownloadButtons buttonClassName="scale-90 origin-left" />
             </div>
+          </div>
 
+          {/* Contact */}
+          <div>
+            <h4 className="font-display font-semibold mb-4">Contact</h4>
             <div className="space-y-3 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-primary" />
+              <div className="flex items-start gap-2">
+                <Mail className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <span>support@legitcards.com.ng</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-primary" />
+              <div className="flex items-start gap-2">
+                <Phone className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <span>+234-806-051-7997</span>
               </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <span>NO.1, Nanka Street, Lakowe, Lekki, Lagos State, 105101</span>
               </div>
             </div>

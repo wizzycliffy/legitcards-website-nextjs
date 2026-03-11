@@ -29,7 +29,7 @@ export function CTASection() {
                 <Button 
                   variant="glass" 
                   size="xl" 
-                  className="w-full sm:w-auto bg-white text-primary hover:bg-white/90 group"
+                  className="w-full sm:w-auto bg-white text-primary-foreground hover:bg-white/90 group"
                 >
                   Start Trading Now
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

@@ -1,32 +1,64 @@
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+'use client';
 
-const cardCategories = ["Popular", "Gaming", "Shopping", "Entertainment", "Food"];
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
-const giftCards = [
-  { name: "Amazon", category: "Shopping", rate: "₦750/$", color: "from-orange-400 to-orange-600" },
-  { name: "iTunes", category: "Entertainment", rate: "₦720/$", color: "from-pink-400 to-pink-600" },
-  { name: "Steam", category: "Gaming", rate: "₦680/$", color: "from-blue-400 to-blue-600" },
-  { name: "Google Play", category: "Entertainment", rate: "₦700/$", color: "from-green-400 to-green-600" },
-  { name: "PlayStation", category: "Gaming", rate: "₦690/$", color: "from-blue-500 to-indigo-600" },
-  { name: "Xbox", category: "Gaming", rate: "₦670/$", color: "from-green-500 to-green-700" },
-  { name: "Sephora", category: "Shopping", rate: "₦650/$", color: "from-rose-400 to-rose-600" },
-  { name: "Walmart", category: "Shopping", rate: "₦720/$", color: "from-blue-400 to-blue-500" },
-  { name: "Uber", category: "Food", rate: "₦680/$", color: "from-gray-700 to-gray-900" },
-  { name: "DoorDash", category: "Food", rate: "₦660/$", color: "from-red-400 to-red-600" },
-  { name: "Netflix", category: "Entertainment", rate: "₦700/$", color: "from-red-500 to-red-700" },
-  { name: "Spotify", category: "Entertainment", rate: "₦680/$", color: "from-green-400 to-green-500" },
+const BRAND_COLORS = [
+  "from-orange-400 to-orange-600",
+  "from-pink-400 to-pink-600",
+  "from-blue-400 to-blue-600",
+  "from-green-400 to-green-600",
+  "from-blue-500 to-indigo-600",
+  "from-rose-400 to-rose-600",
+  "from-purple-400 to-purple-600",
+  "from-yellow-400 to-orange-500",
 ];
 
-export function SupportedCardsSection() {
-  const [activeCategory, setActiveCategory] = useState("Popular");
+const BASE_URL = "https://legitcards-api.onrender.com/api";
 
-  const filteredCards = activeCategory === "Popular" 
-    ? giftCards.slice(0, 8) 
-    : giftCards.filter(card => card.category === activeCategory);
+export function SupportedCardsSection() {
+  const { user } = useAuth();
+  const [assets, setAssets] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch assets — same endpoint as the sell page
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/assets/users/get/all`, {
+          headers: {
+            "Content-Type": "application/json",
+            ...(typeof window !== "undefined" && localStorage.getItem("token")
+              ? { Authorization: `Bearer ${localStorage.getItem("token")}` }
+              : {}),
+          },
+        });
+        const data = await res.json();
+        if (res.ok && Array.isArray(data.data)) {
+          setAssets(data.data);
+        }
+      } catch {
+        // fail silently – keep loading false
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAssets();
+  }, []);
+
+  // Pick 8 random cards, re-randomised only when assets change
+  const displayCards = useMemo(() => {
+    if (assets.length === 0) return [];
+    const shuffled = [...assets].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 8);
+  }, [assets]);
+
+  const viewAllHref = user ? "/sell" : "/login";
 
   return (
-    <section className="py-16 md:py-24 px-[1vw] gradient-secondary">
+    <section className="py-16 md:py-24 gradient-secondary">
       <div className="container mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="text-center mb-12">
@@ -41,57 +73,55 @@ export function SupportedCardsSection() {
           </p>
         </div>
 
-        {/* Category Tabs */}
-        {/* <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {cardCategories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={cn(
-                "px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300",
-                activeCategory === category
-                  ? "gradient-primary text-primary-foreground shadow-glow"
-                  : "bg-card border border-border text-muted-foreground hover:border-primary/50"
-              )}
-            >
-              {category}
-            </button>
-          ))}
-        </div> */}
-
         {/* Cards Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {filteredCards.map((card, index) => (
-            <div
-              key={card.name}
-              className="flex flex-col items-center justify-center group bg-card rounded-2xl sm:p-5 p-4 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 cursor-pointer animate-scale-in"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              {/* Card Icon */}
-              <div className={cn(
-                "w-14 h-14 rounded-xl bg-gradient-to-br flex items-center justify-center mb-4 group-hover:scale-110 transition-transform",
-                card.color
-              )}>
-                <span className="text-white font-bold text-lg">
-                  {card.name.charAt(0)}
-                </span>
+        {isLoading ? (
+          <div className="flex justify-center py-16">
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          </div>
+        ) : displayCards.length === 0 ? (
+          <p className="text-center text-muted-foreground py-12">No cards available right now.</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {displayCards.map((card, index) => (
+              <div
+                key={card._id}
+                className="flex flex-col items-center justify-center group bg-card rounded-2xl sm:p-5 p-4 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 cursor-pointer animate-scale-in"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {/* Card Icon / Image */}
+                <div
+                  className={`w-14 h-14 rounded-xl bg-gradient-to-br flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden ${
+                    BRAND_COLORS[index % BRAND_COLORS.length]
+                  }`}
+                >
+                  {card.images?.[0] ? (
+                    <img
+                      src={card.images[0]}
+                      alt={card.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-white font-bold text-lg">
+                      {card.name?.charAt(0)?.toUpperCase()}
+                    </span>
+                  )}
+                </div>
+
+                {/* Card name */}
+                <h3 className="font-semibold text-center leading-tight">{card.name}</h3>
               </div>
-              
-              {/* Card Info */}
-              <h3 className="font-semibold mb-1 ">{card.name}</h3>
-              <div className="flex items-center justify-between">
-                {/* <span className="text-sm text-muted-foreground">{card.category}</span>
-                <span className="text-sm font-semibold text-primary">{card.rate}</span> */}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* View All Button */}
         <div className="text-center mt-10">
-          <button className="text-primary font-semibold hover:underline">
+          <Link
+            href={viewAllHref}
+            className="inline-block text-primary font-semibold hover:underline transition-colors"
+          >
             View All 200+ Cards →
-          </button>
+          </Link>
         </div>
       </div>
     </section>

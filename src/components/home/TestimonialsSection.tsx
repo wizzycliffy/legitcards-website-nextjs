@@ -7,7 +7,7 @@ import user4 from "@/assets/user4.jpeg";
 
 const testimonials = [
   {
-    name: "Adaeze Okoro",
+    name: "Eze Okoro",
     role: "Regular Trader",
     avatar: user1,
     rating: 5,
@@ -21,7 +21,7 @@ const testimonials = [
     comment: "As someone who receives a lot of gift cards, this platform has been a lifesaver. Fast, reliable, and the customer support is top-notch!",
   },
   {
-    name: "Funke Adeleke",
+    name: "Johnson Adeleke",
     role: "Student",
     avatar: user3,
     rating: 5,

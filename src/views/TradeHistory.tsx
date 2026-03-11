@@ -108,16 +108,21 @@ export default function TradeHistory() {
   const currentTrades = category === "GIFTCARD" ? trades : category === "WITHDRAWS" ? withdrawals : cryptoTrades;
   const isHistoryLoading = category === "GIFTCARD" ? isLoading : category === "WITHDRAWS" ? walletLoading : cryptoLoading;
 
-  const enrichedTrades = currentTrades.filter(trade => {
-    if (category === "WITHDRAWS") {
-      const wName = (trade as any).bankName || "Withdrawal";
-      return wName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+  const enrichedTrades = currentTrades
+    .filter(trade => {
+      if (category === "WITHDRAWS") {
+        const wName = (trade as any).bankName || "Withdrawal";
+        return wName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               trade._id.toLowerCase().includes(searchTerm.toLowerCase());
+      }
+      return (trade as any).assetName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
              trade._id.toLowerCase().includes(searchTerm.toLowerCase());
-    }
-    
-    return (trade as any).assetName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           trade._id.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+    })
+    .sort((a, b) => {
+      const dateA = typeof a.createdAt === "number" ? a.createdAt : new Date(a.createdAt).getTime();
+      const dateB = typeof b.createdAt === "number" ? b.createdAt : new Date(b.createdAt).getTime();
+      return dateB - dateA;
+    });
 
   return (
     <AppLayout>

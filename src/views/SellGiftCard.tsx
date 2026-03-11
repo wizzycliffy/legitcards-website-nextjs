@@ -717,7 +717,7 @@ export default function SellGiftCard() {
               )}
 
               {/* ── Navigation ── */}
-              <div className="flex items-center justify-between mt-8 pt-6 border-t border-border">
+              <div className="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-border">
                 {currentStepIndex > 0 ? (
                   <Button variant="outline" onClick={handleBack}>
                     <ArrowLeft className="w-4 h-4 mr-2" />

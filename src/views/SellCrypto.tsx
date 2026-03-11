@@ -180,14 +180,26 @@ export default function SellCrypto() {
       toast({ title: "Please upload proof of transaction", variant: "destructive" });
       return;
     }
+
+    // Find the matching rate range by amount — same logic as the mobile app (matchingRate.id)
+    const parsedAmt = Number(amount);
+    const matchingRate = Array.isArray(cryptoRate)
+      ? cryptoRate.find((r: any) => {
+          if (r.range_above) return parsedAmt >= r.from;
+          return parsedAmt >= r.from && parsedAmt <= r.to;
+        }) ?? cryptoRate[0]
+      : null;
+
+    if (!matchingRate) {
+      toast({ title: "Could not determine rate. Please check the amount.", variant: "destructive" });
+      return;
+    }
+
     try {
-      const rateSpec = isUsdt && selectedNetwork
-        ? selectedNetwork._id
-        : selectedCoin._id;
       await dispatch(
         startCryptoTrade({
           id: user.userid,
-          data: [{ rateSpec, userAmount: Number(amount), images: uploadedImages }],
+          data: [{ rateSpec: matchingRate._id, userAmount: parsedAmt, images: uploadedImages }],
         }),
       ).unwrap();
       setCurrentStep("success");
@@ -569,7 +581,7 @@ export default function SellCrypto() {
 
         {/* Back navigation (hidden on select and success) */}
         {currentStep !== "select" && currentStep !== "success" && (
-          <div className="pt-6 border-t border-border">
+          <div className="pt-6 border-t border-border mx-2">
             <Button variant="ghost" onClick={handleBack}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
