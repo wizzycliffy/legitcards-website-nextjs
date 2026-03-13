@@ -7,6 +7,7 @@ import { AppDownloadButtons } from "@/components/AppDownloadButtons";
 
 const footerLinks = {
   company: [
+    { name: "About Us", path: "/about" },
     { name: "FAQs", path: "/faq" },
     { name: "Blog", path: "/blog" },
     { name: "Contact Us", path: "/contact" },
@@ -14,7 +15,7 @@ const footerLinks = {
   support: [
     { name: "FAQs", path: "/faq" },
     { name: "Live Chat", path: "/contact" },
-    { name: "Account Deletion", path: "/account-deletion" },
+    { name: "About Us", path: "/about" },
   ],
   legal: [
     { name: "Terms of Service", path: "/terms" },

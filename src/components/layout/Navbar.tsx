@@ -15,6 +15,7 @@ import {
   LayoutDashboard,
   BookText,
   MessageCircleQuestion,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -23,6 +24,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   { name: "Homepage", path: "/", icon: Home },
+  { name: "About Us", path: "/about", icon: Info },
   { name: "Contact Us", path: "/contact", icon: MessageCircleQuestion },
   { name: "Blog", path: "/blog", icon: BookText },
   { name: "FAQ", path: "/faq", icon: HelpCircle },

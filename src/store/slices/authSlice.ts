@@ -28,6 +28,7 @@ interface AuthState {
   registrationStep: "signup" | "activation" | "profile" | "pin" | "completed";
   tempUserId: string | null;
   tempEmail: string | null;
+  tempPassword: string | null;
 }
 
 // SSR-safe initialState — localStorage is not available on the server
@@ -44,6 +45,7 @@ const initialState: AuthState = {
   registrationStep: "signup",
   tempUserId: null,
   tempEmail: null,
+  tempPassword: null,
 };
 
 const BASE_URL = "https://legitcards-api.onrender.com/api";
@@ -161,12 +163,14 @@ export const resendCode = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
   "auth/updateProfile",
-  async (profileData: any, { rejectWithValue }) => {
+  async (profileData: any, { rejectWithValue, getState }) => {
     try {
+      const state = getState() as { auth: AuthState };
+      const password = state.auth.tempPassword;
       const response = await fetch(`${BASE_URL}/auth/users/update`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(profileData),
+        body: JSON.stringify({ ...profileData, password }),
       });
       const data = await response.json();
       if (!response.ok)
@@ -359,6 +363,7 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.registrationStep = "signup";
+      state.tempPassword = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       // Clear cookie for Next.js middleware
@@ -401,6 +406,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.registrationStep = "activation";
         state.tempEmail = action.payload.email;
+        state.tempPassword = action.meta.arg.password || null;
       })
       .addCase(signup.rejected, (state, action) => {
         state.isLoading = false;
@@ -426,6 +432,7 @@ const authSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state) => {
         state.isLoading = false;
         state.registrationStep = "pin";
+        state.tempPassword = null;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.isLoading = false;
