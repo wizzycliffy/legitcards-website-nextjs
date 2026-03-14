@@ -27,9 +27,9 @@ export function CTASection() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/sell">
                 <Button 
-                  variant="glass" 
+                  variant="hero" 
                   size="xl" 
-                  className="w-full sm:w-auto bg-white text-primary-foreground hover:bg-white/90 group"
+                  className="w-full sm:w-auto group"
                 >
                   Start Trading Now
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

@@ -1,9 +1,11 @@
 'use client';
 
 import Link from "next/link";
-import { Facebook, Instagram, Linkedin, Twitter, Gift, Mail, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
+import { Facebook, Instagram, Linkedin, Twitter, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppDownloadButtons } from "@/components/AppDownloadButtons";
+import headerLogo from "@/assets/new header logo.png";
 
 const footerLinks = {
   company: [
@@ -47,13 +49,13 @@ export function Footer() {
 
           {/* Brand / Info */}
           <div className="lg:col-span-2 space-y-5">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-                <Gift className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-display font-bold gradient-text">
-                Legitcard
-              </span>
+            <Link href="/" className="flex items-center">
+              <Image
+                src={headerLogo}
+                alt="LegitCards"
+                height={32}
+                className="h-8 w-auto bg-white rounded px-1"
+              />
             </Link>
 
             <p className="text-sm text-muted-foreground max-w-md leading-relaxed mb-6">

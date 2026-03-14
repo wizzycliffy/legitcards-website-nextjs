@@ -1,12 +1,14 @@
 'use client';
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, Gift, ArrowLeft, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import headerLogo from "@/assets/new header logo.png";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -52,11 +54,8 @@ export default function ForgotPassword() {
       <div className="w-full lg:w-1/2 flex flex-col p-6 md:p-12">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-              <Gift className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-display font-bold gradient-text">LegitCards</span>
+          <Link href="/" className="flex items-center">
+            <Image src={headerLogo} alt="LegitCards" height={36} className="h-9 w-auto" priority />
           </Link>
           <ThemeToggle />
         </div>

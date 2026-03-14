@@ -29,6 +29,8 @@ interface AuthState {
   tempUserId: string | null;
   tempEmail: string | null;
   tempPassword: string | null;
+  tempFullName: string | null;
+  tempPhone: string | null;
 }
 
 // SSR-safe initialState — localStorage is not available on the server
@@ -46,6 +48,8 @@ const initialState: AuthState = {
   tempUserId: null,
   tempEmail: null,
   tempPassword: null,
+  tempFullName: null,
+  tempPhone: null,
 };
 
 const BASE_URL = "https://legitcards-api.onrender.com/api";
@@ -103,16 +107,35 @@ const clearAuthCookie = () => {
 
 export const signup = createAsyncThunk(
   "auth/signup",
-  async (userData: any, { rejectWithValue }) => {
+  async (userData: { email: string; password: string; phoneNumber?: string; fullName?: string }, { rejectWithValue }) => {
     try {
       const deviceInfo = getDeviceInfo();
+
+      // Normalize phone to +234 format, or omit if not provided
+      let normalizedPhone: string | undefined;
+      if (userData.phoneNumber) {
+        const p = userData.phoneNumber.trim();
+        if (p.startsWith('+')) {
+          normalizedPhone = p;
+        } else if (p.startsWith('0')) {
+          normalizedPhone = `+234${p.slice(1)}`;
+        } else if (p.length > 0) {
+          normalizedPhone = `+${p}`;
+        }
+      }
+
+      // Only send fields the API expects — fullName is NOT a create-endpoint field
+      const body: Record<string, any> = {
+        email: userData.email,
+        password: userData.password,
+        ...deviceInfo,
+      };
+      if (normalizedPhone) body.phoneNumber = normalizedPhone;
+
       const response = await fetch(`${BASE_URL}/auth/users/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...userData,
-          ...deviceInfo,
-        }),
+        body: JSON.stringify(body),
       });
       const data = await response.json();
       if (!response.ok) return rejectWithValue(data.message || "Signup failed");
@@ -122,6 +145,7 @@ export const signup = createAsyncThunk(
     }
   },
 );
+
 
 export const activateAccount = createAsyncThunk(
   "auth/activate",
@@ -167,10 +191,30 @@ export const updateProfile = createAsyncThunk(
     try {
       const state = getState() as { auth: AuthState };
       const password = state.auth.tempPassword;
+      const fullName = state.auth.tempFullName || "";
+      const phone = state.auth.tempPhone || "";
+
+      // Derive firstname, lastname, username from fullName if not provided
+      const parts = fullName.trim().split(" ");
+      const firstname = profileData.firstname || (parts[0] ?? "");
+      const lastname = profileData.lastname || (parts.length > 1 ? parts.slice(1).join(" ") : parts[0] ?? "");
+      const username = profileData.username || `${parts[0] ?? "user"}${Math.floor(1000 + Math.random() * 900000)}`;
+      const phoneNumber = profileData.phoneNumber || phone || undefined;
+
+      const payload = {
+        ...profileData,
+        firstname,
+        lastname,
+        username,
+        phoneNumber,
+        password,
+        gender: profileData.gender || "Undefined",
+      };
+
       const response = await fetch(`${BASE_URL}/auth/users/update`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...profileData, password }),
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
       if (!response.ok)
@@ -327,7 +371,14 @@ export const login = createAsyncThunk(
       });
       const data = await response.json();
 
-      // console.log('Login Response:', data);
+      // Unverified account: API sends OTP and returns LOGIN_CODE_SENT
+      if (data.statusCode === "LOGIN_CODE_SENT") {
+        return rejectWithValue({
+          type: "LOGIN_CODE_SENT",
+          email: credentials.email,
+          message: data.message || "Please verify your email to continue.",
+        });
+      }
 
       if (!response.ok) return rejectWithValue(data.message || "Login failed");
 
@@ -337,13 +388,9 @@ export const login = createAsyncThunk(
       const token = firstItem?.token || data.token;
       const user = firstItem?.userInfo || firstItem?.user || firstItem;
 
-      console.log("Extracted User:", user);
-      console.log("Extracted Token:", token);
-
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
-        // Set cookie for Next.js middleware server-side route protection
         setAuthCookie(token);
       }
 
@@ -364,6 +411,8 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.registrationStep = "signup";
       state.tempPassword = null;
+      state.tempFullName = null;
+      state.tempPhone = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       // Clear cookie for Next.js middleware
@@ -407,6 +456,8 @@ const authSlice = createSlice({
         state.registrationStep = "activation";
         state.tempEmail = action.payload.email;
         state.tempPassword = action.meta.arg.password || null;
+        state.tempFullName = action.meta.arg.fullName || null;
+        state.tempPhone = action.meta.arg.phoneNumber || null;
       })
       .addCase(signup.rejected, (state, action) => {
         state.isLoading = false;
@@ -433,6 +484,8 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.registrationStep = "pin";
         state.tempPassword = null;
+        state.tempFullName = null;
+        state.tempPhone = null;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.isLoading = false;

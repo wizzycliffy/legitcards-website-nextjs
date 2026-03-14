@@ -54,17 +54,17 @@ export default function AboutUs() {
   return (
     <MainLayout>
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0A2540] to-[#1a3a5c] text-white">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl translate-x-1/2 translate-y-1/2" />
+      <section className="relative overflow-hidden gradient-primary text-white">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full filter blur-3xl -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full filter blur-3xl translate-x-1/2 translate-y-1/2" />
         </div>
         <div className="relative container mx-auto px-6 lg:px-10 py-24 max-w-6xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-blue-300 mb-4">About Us</p>
+          <p className="text-sm font-semibold uppercase tracking-widest text-white/70 mb-4">About Us</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-            Welcome to <span className="text-blue-300">LegitCards</span>
+            Welcome to <span className="text-white/90 underline decoration-white/30">LegitCards</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-white/85 max-w-3xl mx-auto leading-relaxed">
             LegitCards is a trusted digital platform that provides a secure and convenient way for people
             in Nigeria to sell gift cards and trade Bitcoin for instant Naira. Our mission is simple —
             to make digital asset trading safe, fast, and accessible for everyone.
@@ -204,21 +204,21 @@ export default function AboutUs() {
       {/* ── Our Commitment to Security ── */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-6 lg:px-10 max-w-6xl">
-          <div className="rounded-3xl bg-gradient-to-br from-[#0A2540] to-[#1a3a5c] text-white p-10 md:p-16 flex flex-col md:flex-row items-center gap-10">
+          <div className="rounded-3xl gradient-primary text-white p-10 md:p-16 flex flex-col md:flex-row items-center gap-10">
             <div className="flex-1">
-              <p className="text-sm font-semibold uppercase tracking-widest text-blue-300 mb-3">Security First</p>
+              <p className="text-sm font-semibold uppercase tracking-widest text-white/70 mb-3">Security First</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Commitment to Security</h2>
-              <p className="text-white/80 leading-relaxed mb-4">
+              <p className="text-white/85 leading-relaxed mb-4">
                 At LegitCards, protecting our users is a top priority. We implement strong security
                 measures and secure systems to ensure that every transaction on our platform is
                 handled safely.
               </p>
-              <p className="text-white/80 leading-relaxed">
+              <p className="text-white/85 leading-relaxed">
                 We also continuously improve our platform to provide a secure and smooth experience
                 for all users.
               </p>
             </div>
-            <div className="shrink-0 w-28 h-28 rounded-3xl bg-white/10 flex items-center justify-center">
+            <div className="shrink-0 w-28 h-28 rounded-3xl bg-white/20 flex items-center justify-center">
               <Lock className="w-14 h-14 text-white" />
             </div>
           </div>
@@ -262,7 +262,7 @@ export default function AboutUs() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/signup"
-                className="inline-flex items-center justify-center h-11 px-8 rounded-xl bg-[#0A2540] dark:bg-white text-white dark:text-[#0A2540] font-semibold hover:opacity-90 transition shadow-sm"
+                className="inline-flex items-center justify-center h-11 px-8 rounded-xl bg-primary text-primary-foreground font-semibold hover:opacity-90 transition shadow-sm"
               >
                 Create an Account
               </Link>

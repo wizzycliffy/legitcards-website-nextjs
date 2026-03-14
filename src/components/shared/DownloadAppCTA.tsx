@@ -21,10 +21,10 @@ export function DownloadAppCTA() {
       
       {/* Right side: Content */}
       <div className="w-full md:w-[55%] lg:w-1/2 p-8 md:p-12 lg:p-20 flex flex-col justify-center bg-white dark:bg-gray-900">
-        <h2 className="text-3xl md:text-4xl lg:text-[40px] leading-tight font-bold text-[#0A2540] dark:text-white mb-5">
+        <h2 className="text-3xl md:text-4xl lg:text-[40px] leading-tight font-bold mb-5">
           Download The App
         </h2>
-        <p className="text-[#3b5973] dark:text-gray-300 mb-10 max-w-md text-[17px] leading-relaxed">
+        <p className="text-muted-foreground mb-10 max-w-md text-[17px] leading-relaxed">
           Experience the best of Legit Cards on your phone or tablet. Available for iOS and Android operating systems.
         </p>
         
@@ -36,7 +36,7 @@ export function DownloadAppCTA() {
             <span className="text-[19px] font-bold">Get on iPhone</span>
           </Link>
           
-          <Link href="https://play.google.com/store/apps/details?id=com.legitcardsusers" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-[#05A357] text-white px-8 py-[18px] rounded-full hover:bg-[#04914d] transition-colors w-full xl:w-auto justify-center min-w-[240px]">
+          <Link href="https://play.google.com/store/apps/details?id=com.legitcardsusers" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-primary text-primary-foreground px-8 py-[18px] rounded-full hover:opacity-90 transition-colors w-full xl:w-auto justify-center min-w-[240px]">
             <svg viewBox="0 0 512 512" className="w-7 h-7 fill-current" xmlns="http://www.w3.org/2000/svg">
               <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"></path>
             </svg>
